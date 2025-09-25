@@ -25,7 +25,8 @@ export default async function handler(req, res) {
       const origin = req.headers.origin || `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
       const baseUrl = env === 'PROD' ? 'https://api.cashfree.com' : 'https://sandbox.cashfree.com'
   
-      const { name, email, phone, amount } = (req.body || {})
+      const { name, email, phone, collegeYear, date, time, amount } = (req.body || {})
+
   
       // Basic sanitation and fallbacks
       const orderAmount = Number(amount) > 0 ? Number(amount) : 299
@@ -46,12 +47,12 @@ export default async function handler(req, res) {
           customer_email: customerEmail,
           customer_phone: customerPhone,
         },
-        order_note: 'ClearPath to SDE - Workshop Enrollment',
+        order_note: `ClearPath to SDE - Workshop Enrollment | Year: ${collegeYear} | Date: ${date} | Time: ${time}`,
         order_meta: {
-          // Cashfree supports placeholders like {order_id}
           return_url: `https://smritidoneria.com/success?order_id={order_id}`,
         },
       }
+      
       const cfRes = await fetch(`${baseUrl}/pg/orders`, {
         method: 'POST',
         headers: {
