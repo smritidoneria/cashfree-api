@@ -8,7 +8,7 @@ const PaymentSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   collegeYear: { type: String, required: true },  // new field
   date: { type: String, required: true },         // new field
-  time: { type: String, required: true },         // new field
+  time: { type: String },         // new field
   status: { type: String, required: true, default: "PENDING" }, // SUCCESS / FAILED / PENDING
   createdAt: { type: Date, default: Date.now },
 });
