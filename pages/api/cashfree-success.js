@@ -35,7 +35,13 @@ export default async function handler(req, res) {
       time,         // new
       status: "SUCCESS",
     });
-    
+    const savedPayment = await Payment.findOne({ orderId: order_id });
+    if (!savedPayment) {
+      console.error("❌ Payment was not saved in MongoDB");
+      return res.status(500).json({ error: "Payment not saved in database" });
+    }
+
+    console.log("✅ Payment stored successfully:", savedPayment);
 
     // Send confirmation email
     const transporter = nodemailer.createTransport({
