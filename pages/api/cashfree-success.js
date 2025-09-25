@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
   // ✅ Always set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); 
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
@@ -17,7 +17,8 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { order_id, name, email, phone, amount } = req.body;
+  const { order_id, name, email, phone, amount, collegeYear, date, time } = req.body;
+
 
   try {
     await connectDB();
@@ -29,8 +30,12 @@ export default async function handler(req, res) {
       email,
       phone,
       amount,
+      collegeYear,  // new
+      date,         // new
+      time,         // new
       status: "SUCCESS",
     });
+    
 
     // Send confirmation email
     const transporter = nodemailer.createTransport({
@@ -59,9 +64,13 @@ export default async function handler(req, res) {
       `,
     });
 
-    return res.status(200).json({ message: "Payment saved & email sent", payment });
+    return res
+      .status(200)
+      .json({ message: "Payment saved & email sent", payment });
   } catch (err) {
     console.error("❌ Error saving payment:", err);
-    return res.status(500).json({ error: "Failed to process payment", details: err.message });
+    return res
+      .status(500)
+      .json({ error: "Failed to process payment", details: err.message });
   }
 }
