@@ -101,7 +101,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, phone, amount, collegeYear, date, time } = req.body;
+  const { name, email, phone, amount, collegeYear, date } = req.body;
+  const timeMap = {
+    "2nd Year": "4:00 PM - 5:00 PM",
+    "3rd Year": "5:30 PM - 6:30 PM",
+    "4th Year": "9:00 PM - 10:00 PM",
+  };
+  const time = timeMap[collegeYear] || "6:00 PM - 7:00 PM"; // fallback
 
 
   try {
@@ -141,18 +147,41 @@ export default async function handler(req, res) {
     await transporter.sendMail({
       from: `"Career10X Workshop" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Payment Successful - Career10X Workshop",
+      subject: "Your Registration & Payment Confirmation - Career10X Workshop",
       html: `
-        <h2>Hi ${name},</h2>
-        <p>✅ Your payment of <b>₹${amount}</b> was successful!</p>
-        <p>Workshop Details:</p>
-        <ul>
-          <li>Date: 22nd Sept</li>
-          <li>Time: 6-7 PM</li>
-        </ul>
-        <p>We’ll see you in the session 🚀</p>
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e2e2; border-radius: 10px;">
+          <h2 style="color: #F59E0B;">Hello ${name},</h2>
+          <p>We are excited to confirm your registration for the <strong>Career10X Workshop</strong>!</p>
+    
+          <p>✅ <strong>Payment Received:</strong> ₹${amount}</p>
+    
+          <h3 style="color: #2563EB; margin-top: 20px;">Workshop Details</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd;"><strong>Date:</strong></td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${date}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd;"><strong>Time:</strong></td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${time}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd;"><strong>College Year:</strong></td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${collegeYear}</td>
+            </tr>
+          </table>
+    
+          <p style="margin-top: 20px;">We recommend joining the session a few minutes early to ensure a smooth experience.</p>
+    
+          <p>📌 <strong>Important:</strong> Keep this email for reference. You will also receive reminders via WhatsApp.</p>
+    
+          <p style="margin-top: 30px;">Looking forward to seeing you at the workshop! 🚀</p>
+    
+          <p style="margin-top: 20px; font-weight: bold; color: #111;">Best Regards,<br/>Career10X Workshop Team</p>
+        </div>
       `,
     });
+    
 
     return res
       .status(200)
@@ -164,4 +193,3 @@ export default async function handler(req, res) {
       .json({ error: "Failed to process payment", details: err.message });
   }
 }
-
