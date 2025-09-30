@@ -29,7 +29,7 @@ export default async function handler(req, res) {
 
   
       // Basic sanitation and fallbacks
-      const orderAmount = Number(amount) > 0 ? Number(amount) : 299
+      const orderAmount = Number(amount) > 0 ? Number(amount) : 199
       const customerName = (name || 'Student').toString().slice(0, 128)
       const customerEmail = (email || 'student@example.com').toString().slice(0, 128)
       const customerPhone = (phone || '9999999999').toString().slice(0, 15)
@@ -47,9 +47,9 @@ export default async function handler(req, res) {
           customer_email: customerEmail,
           customer_phone: customerPhone,
         },
-        order_note: `ClearPath to SDE - Workshop Enrollment | Year: ${collegeYear} | Date: ${date} | Time: ${time}`,
+        order_note: `10X Workshop - Workshop Enrollment | Year: ${collegeYear} | Date: ${date} | Time: ${time}`,
         order_meta: {
-          return_url: `https://smritidoneria.com/success?order_id={order_id}`,
+          return_url: `https://smritidoneria.com/success`,
         },
       }
       
