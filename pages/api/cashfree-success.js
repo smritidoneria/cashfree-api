@@ -27,7 +27,9 @@ export default async function handler(req, res) {
 
 
   try {
+       await connectDB();
     let payment = await Payment.findOne({ orderId });
+    
 
     if (payment) {
       // Update existing payment status and details
