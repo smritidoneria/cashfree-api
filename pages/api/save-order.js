@@ -45,7 +45,7 @@ export default async function handler(req, res) {
               collegeYear,
               date,
               time,
-              status: "SUCCESS",
+              status: "PENDING"
             });
 
     res.status(201).json({ 
