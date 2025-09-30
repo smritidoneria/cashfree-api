@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, phone, amount, collegeYear, date } = req.body;
+   const { name, email, phone, amount, collegeYear, date,orderId } = req.body;
   const timeMap = {
     "2nd Year": "4:00 PM - 5:00 PM",
     "3rd Year": "5:30 PM - 6:30 PM",
