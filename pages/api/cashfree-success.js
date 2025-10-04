@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, phone, amount, collegeYear, date,orderId } = req.body;
+  const { name, phone, email, collegeYear, amount, date, order_id } = req.body;
   console.log("Received payment data:", req.body);
   const timeMap = {
     "2nd Year": "4:00 PM - 5:00 PM",
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
 
   try {
        await connectDB();
-    let payment = await Payment.findOne({ orderId });
+    let payment = await Payment.findOne({ order_id });
     console.log("Existing payment record:", payment);
 
     if (payment) {
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     } else {
       // Create new payment
       payment = await Payment.create({
-        orderId,  // store orderId
+        order_id,  // store orderId
         name,
         email,
         phone,
