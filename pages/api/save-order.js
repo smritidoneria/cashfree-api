@@ -15,6 +15,7 @@ export default async function handler(req, res) {
 
   try {
     const { name, phone, email, collegeYear, amount, date, orderId, time } = req.body;
+      console.log("save",req.body);
 
     if (!orderId) {
       return res.status(400).json({ error: "Order ID required" });
